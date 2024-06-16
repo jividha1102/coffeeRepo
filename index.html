@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee</title>
+    <style>
+        .container {
+            background-image: url('images/wall.jpg');
+            background-size: cover;
+            color: white;
+        }
+        .form-control {
+            opacity: 0.8;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container p-4">
+        <nav class="navbar navbar-expand-lg text-center">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" width="250" height="150" class="d-inline-block align-top" alt="Coffee">
+            </a>
+            <h1>Welcome To Our Coffee Cafe</h1>
+        </nav>
+        <div class="row">
+            <div class="col-8">
+                <form action="#">
+                    <div class="form-group">
+                        <label>Choose your Coffee</label>
+                        <select name="coffee" id="coffee" class="form-control mt-2" onchange="coffeename();">
+                            <option value="americano">Americano</option>
+                            <option value="mocha">Mocha</option>
+                            <option value="cappuccino">Cappuccino</option>
+                            <option value="frappe">Frappe</option>
+                            <option value="jaggerytea">Jaggery Tea</option>
+                            <option value="icedtea">Iced Tea</option>
+                            <option value="lemontea">Lemon Tea</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Price of Coffee in Rs</label>
+                        <input type="text" name="price" id="price" class="form-control">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Quantity of cup of coffee</label>
+                        <input type="text" name="quantity" id="quantity" class="form-control" onblur="getqty();">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Total Price of Coffee in Rs</label>
+                        <input type="text" name="cprice" id="cprice" class="form-control">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Extra Sugar:</label>
+                        <div>
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="yes" id="optyes" onchange="sugar()"> Yes
+                            </label>
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="no" id="optno" onchange="sugar()"> No
+                            </label>
+                            <label id="sugar" class="text-success">10rs per cup</label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Total price:</label>
+                            <input type="text" class="form-control" id="fprice" name="final price">
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Are you a student?</label>
+                        <div>
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="yes" id="yes" name="optradio1" onchange="discount()"> Yes : 10% Off
+                            </label>
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="no" id="no" name="optradio1" onchange="discount()"> No : 5% Off
+                            </label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Price after discount:</label>
+                            <input type="text" class="form-control" id="dprice" name="Price After Discount" disabled>
+                        </div>
+                        <button type="button" onclick="paybill();" class="btn btn-primary btn-block mt-2">Calculate Bill</button>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>CGST @2.5%:</label>
+                        <input type="text" class="form-control" id="cgst">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>SGST @2.5%:</label>
+                        <input type="text" class="form-control" id="sgst">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Total Bill:</label>
+                        <input type="text" class="form-control" id="totalbill" name="price">
+                    </div>
+                    <button type="button" class="btn btn-success btn-block mt-4">Pay Now</button>
+                    <div class="form-group mt-2">
+                        <button type="button" onclick="dialogalert();" class="btn btn-primary">Print receipt</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4">
+                <img src="images/americano.jpg" width="300px" id="cimage" height="300px">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var price = 0, qty = 0, totalprice = 0, fprice = 0, dprice = 0, sugarprice = 0;
+        var flag = 0;
+
+        function coffeename() {
+            var coffee = document.getElementById('coffee').value;
+            var coffeeImage = document.getElementById('cimage');
+
+            switch (coffee) {
+                case "americano":
+                    price = 120;
+                    coffeeImage.src = "images/americano.jpg";
+                    break;
+                case "mocha":
+                    price = 130;
+                    coffeeImage.src = "images/mocha.png";
+                    break;
+                case "cappuccino":
+                    price = 140;
+                    coffeeImage.src = "images/cappuccino.jpg";
+                    break;
+                case "frappe":
+                    price = 150;
+                    coffeeImage.src = "images/frapee.jpg";
+                    break;
+                case "jaggerytea":
+                    price = 160;
+                    coffeeImage.src = "images/jaggery.jpeg";
+                    break;
+                case "icedtea":
+                    price = 170;
+                    coffeeImage.src = "images/ice tea.jpg";
+                    break;
+                case "lemontea":
+                    price = 160;
+                    coffeeImage.src = "images/lemon tea.jpg";
+                    break;
+                default:
+                    price = 0;
+            }
+            document.getElementById('price').value = price;
+        }
+
+        function getqty() {
+            qty = parseInt(document.getElementById('quantity').value);
+            totalprice = price * qty;
+            document.getElementById('cprice').value = totalprice;
+            fprice = totalprice;
+            document.getElementById('fprice').value = fprice;
+        }
+
+        function sugar() {
+            var extraSugar = document.getElementById('optyes').checked;
+            sugarprice = extraSugar ? qty * 10 : 0;
+            fprice = totalprice + sugarprice;
+            document.getElementById('fprice').value = fprice;
+        }
+
+        function discount() {
+            var studentDiscount = document.getElementById('yes').checked ? 0.1 : 0.05;
+            dprice = fprice - (fprice * studentDiscount);
+            document.getElementById('dprice').value = dprice;
+        }
+
+        function paybill() {
+            var gst = (dprice * 2.5) / 100;
+            document.getElementById('cgst').value = gst;
+            document.getElementById('sgst').value = gst;
+            var totalbill = dprice + (2 * gst);
+            document.getElementById('totalbill').value = totalbill;
+        }
+
+        function dialogalert() {
+            alert("Thank You! Visit Again");
+        }
+    </script>
+</body>
+</html>
